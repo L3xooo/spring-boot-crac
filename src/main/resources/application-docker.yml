@@ -1,0 +1,10 @@
+spring:
+  mongodb:
+    uri: mongodb://mongodb:27017/cracdemo
+  datasource:
+    url: jdbc:postgresql://postgres:5432/cracdemo
+
+env: docker
+
+
+

@@ -10,7 +10,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.beans.factory.annotation.Value;
 
-@SpringBootApplication
+@SpringBootApplication(exclude = {})
 public class CracDemoApplication implements Resource {
     private static final Logger log = LoggerFactory.getLogger(CracDemoApplication.class);
 

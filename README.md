@@ -1,41 +1,3 @@
-## Spring Boot, JVM and CRaC
-
-This is a sample project to demonstrate Spring Boot 3.2+ CRaC support by creating a checkpoint and then restoring your application using it.
-
-### Step 1: Prerequisites
-* Download JDK 17 with CRaC support provided by Azul From [here](https://www.azul.com/downloads/?version=java-17-lts&os=ubuntu&architecture=x86-64-bit&package=jdk-crac#zulu
-) and install it. This one is for Debian based OS like Ubuntu.
-```
-sudo dpkg -i zulu17.58.25-ca-crac-jdk17.0.15-linux_amd64.deb
-```
-* Grant appropriate permissions for CRIU to be functional. Note that you need to be present in your java home directory of the JDK you downloaded in previous step.
-```
-sudo chown root:root ./lib/criu
-
-sudo chmod u+s ./lib/criu
-```
-### Step 2: Build
-```
-mvn clean package
-```
-
-### Step 3: Deploy
-```
-/usr/lib/jvm/zulu-17-crac-amd64/bin/java -XX:CRaCCheckpointTo=./tmp_chkpoint -jar ./target/crac-demo-0.0.1-SNAPSHOT.jar
-```
-
-### Step 4: Checkpoint
-Find the PID of the running instance and use it to create an application checkpoint:
-```
-jcmd 189254 JDK.checkpoint
-```
-
-### Step 5: Restore
-Restore and bring your instance back up:
-```
-/usr/lib/jvm/zulu-17-crac-amd64/bin/java -XX:CRaCRestoreFrom=./tmp_chkpoint
-```
-
 ### Docker:3 modes for checkpoint and restore
 
 Build the image:
@@ -52,18 +14,13 @@ docker run --rm -p 8080:8080 crac-demo
 #### Scenario 2: Create checkpoint only
 Start the app, let it warm up, then create a checkpoint and exit:
 ```
-docker run --rm -v crac-checkpoint:/checkpoint -e MODE=checkpoint-only crac-demo
-```
-
-If you want a longer warmup before checkpointing, set:
-```
-docker run --rm -v crac-checkpoint:/checkpoint -e MODE=checkpoint-only -e STARTUP_WAIT_SECONDS=30 crac-demo
+docker run --rm -v crac-checkpoint:/checkpoint -e MODE=checkpoint-only -e SPRING_PROFILES_ACTIVE=docker crac-demo
 ```
 
 #### Scenario 3: Restore from checkpoint
 Resume the app from a previously saved checkpoint:
 ```
-docker run --rm -p 8080:8080 -v crac-checkpoint:/checkpoint -e MODE=restore crac-demo
+docker run --rm -p 8080:8080 -v crac-checkpoint:/checkpoint -e MODE=restore -e SPRING_PROFILES_ACTIVE=docker crac-demo
 ```
 
 This will start the app in seconds using the previously saved state.

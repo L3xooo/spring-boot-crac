@@ -4,21 +4,22 @@ set -eu
 APP_JAR=${APP_JAR:-/app/app.jar}
 CHECKPOINT_DIR=${CHECKPOINT_DIR:-/checkpoint}
 MODE=${MODE:-normal}
-STARTUP_WAIT_SECONDS=${STARTUP_WAIT_SECONDS:-15}
 
 mkdir -p "$CHECKPOINT_DIR"
 
-# MODE=checkpoint-only: Start app, wait, create checkpoint, exit
+# MODE=checkpoint-only: Spring auto-checkpoints at onRefresh phase, then exits
 if [ "$MODE" = "checkpoint-only" ]; then
-  java -XX:CRaCCheckpointTo="$CHECKPOINT_DIR" -jar "$APP_JAR" &
-  APP_PID=$!
+  java \
+    -XX:CRaCCheckpointTo="$CHECKPOINT_DIR" \
+    -Dspring.context.checkpoint=onRefresh \
+    -jar "$APP_JAR" || EXIT_CODE=$?
 
-  sleep "$STARTUP_WAIT_SECONDS"
-
-  jcmd "$APP_PID" JDK.checkpoint
-  wait "$APP_PID" || true
-
-  echo "Checkpoint completed and saved to $CHECKPOINT_DIR"
+  if [ "${EXIT_CODE:-0}" -eq 137 ]; then
+    echo "Checkpointing completed successfully."
+  else
+    echo "Unexpected exit code: ${EXIT_CODE:-0}"
+    exit "${EXIT_CODE:-0}"
+  fi
   exit 0
 fi
 
@@ -29,7 +30,3 @@ fi
 
 # MODE=normal (default): Just run the app normally
 exec java -jar "$APP_JAR"
-
-
-
-

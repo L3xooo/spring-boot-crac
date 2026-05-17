@@ -1,32 +1,41 @@
 package com.example.cracdemo;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 import java.time.Instant;
 
-@Document("saved_messages")
-public class SavedMessage {
-
+@Entity
+@Table(name = "postgres_messages")
+public class PostgresMessage {
     @Id
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(nullable = false)
     private String message;
+
+    @Column(nullable = false)
     private Instant createdAt;
 
-    public SavedMessage() {
+    public PostgresMessage() {
     }
 
-    public SavedMessage(String id, String message, Instant createdAt) {
+    public PostgresMessage(Long id, String message, Instant createdAt) {
         this.id = id;
         this.message = message;
         this.createdAt = createdAt;
     }
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

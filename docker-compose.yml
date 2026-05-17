@@ -1,0 +1,17 @@
+services:
+
+  postgres:
+    container_name: postgres
+    image: "postgres:latest"
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: cracdemo
+      POSTGRES_PASSWORD: cracdemo
+      POSTGRES_DB: cracdemo
+
+  mongodb:
+    container_name: mongodb
+    image: mongo:7.0
+    ports:
+      - 27017:27017

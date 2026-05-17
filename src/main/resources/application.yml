@@ -1,7 +1,16 @@
 spring:
   mongodb:
-    uri: ${MONGODB_URI:mongodb://localhost:27017/cracdemo}
+    uri: mongodb://localhost:27017/cracdemo
+  datasource:
+    url: jdbc:postgresql://localhost:5432/cracdemo
+    username: cracdemo
+    password: cracdemo
+    driver-class-name: org.postgresql.Driver
 
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update
 
 env: ${ENV:Hello from application.yml}
 

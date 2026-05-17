@@ -3,7 +3,7 @@ WORKDIR /workspace
 
 COPY pom.xml ./
 COPY src ./src
-RUN mvn -q -DskipTests package
+RUN mvn clean install
 
 FROM azul/zulu-openjdk:25-jdk-crac-latest
 WORKDIR /app
