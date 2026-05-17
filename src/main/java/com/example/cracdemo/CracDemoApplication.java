@@ -9,8 +9,15 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.hibernate.autoconfigure.HibernateJpaAutoConfiguration;
+import org.springframework.boot.jdbc.autoconfigure.DataSourceAutoConfiguration;
+import org.springframework.boot.jdbc.autoconfigure.DataSourceTransactionManagerAutoConfiguration;
 
-@SpringBootApplication(exclude = {})
+@SpringBootApplication(exclude = {
+    DataSourceAutoConfiguration.class,
+    HibernateJpaAutoConfiguration.class,
+    DataSourceTransactionManagerAutoConfiguration.class
+})
 public class CracDemoApplication implements Resource {
     private static final Logger log = LoggerFactory.getLogger(CracDemoApplication.class);
 
