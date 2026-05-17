@@ -1,0 +1,9 @@
+spring:
+  mongodb:
+    uri: ${MONGODB_URI:mongodb://localhost:27017/cracdemo}
+
+
+env: ${ENV:Hello from application.yml}
+
+
+
