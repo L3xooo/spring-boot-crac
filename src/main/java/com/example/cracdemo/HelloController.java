@@ -15,8 +15,8 @@ public class HelloController {
     @Autowired
     private SavedMessageRepository repository;
 
-//    @Autowired
-//    private PostgresMessageRepository postgresMessageRepository;
+    @Autowired
+    private PostgresMessageRepository postgresMessageRepository;
 
     @Value("${env:Hello from application.yml}")
     private String env;
@@ -32,9 +32,9 @@ public class HelloController {
         return repository.save(savedMessage);
     }
 
-//    @PostMapping("/postgres/save")
-//    public PostgresMessage savePostgres() {
-//        PostgresMessage message = new PostgresMessage(null, "message", Instant.now());
-//        return postgresMessageRepository.save(message);
-//    }
+    @PostMapping("/postgres/save")
+    public PostgresMessage savePostgres() {
+        PostgresMessage message = new PostgresMessage(null, "message", Instant.now());
+        return postgresMessageRepository.save(message);
+    }
 }

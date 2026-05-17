@@ -6,7 +6,10 @@ spring:
     username: cracdemo
     password: cracdemo
     driver-class-name: org.postgresql.Driver
-
+    hikari:
+      minimum-idle: 0
+      maximum-pool-size: 10
+      allow-pool-suspension: true
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:

@@ -14,9 +14,9 @@ import org.springframework.boot.jdbc.autoconfigure.DataSourceAutoConfiguration;
 import org.springframework.boot.jdbc.autoconfigure.DataSourceTransactionManagerAutoConfiguration;
 
 @SpringBootApplication(exclude = {
-    DataSourceAutoConfiguration.class,
-    HibernateJpaAutoConfiguration.class,
-    DataSourceTransactionManagerAutoConfiguration.class
+//    DataSourceAutoConfiguration.class,
+//    HibernateJpaAutoConfiguration.class,
+//    DataSourceTransactionManagerAutoConfiguration.class
 })
 public class CracDemoApplication implements Resource {
     private static final Logger log = LoggerFactory.getLogger(CracDemoApplication.class);
