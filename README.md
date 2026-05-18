@@ -31,6 +31,6 @@ docker run --rm --network some-network -p 8080:8080 -v crac-checkpoint:/checkpoi
 Test the application by sending a request to the endpoint:
 ```
 curl http://localhost:8080/hello
-curl http://localhost:8080/mongo/save
-curl http://localhost:8080/postgres/save
+curl -X POST http://localhost:8080/mongo/save
+curl -X POST http://localhost:8080/postgres/save
 ```
