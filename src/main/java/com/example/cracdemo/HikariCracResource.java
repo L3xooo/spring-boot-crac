@@ -27,7 +27,6 @@ public class HikariCracResource implements Resource {
 
         this.hikari = h;
         Core.getGlobalContext().register(this);
-
         log.info("HikariCracResource registered");
     }
 

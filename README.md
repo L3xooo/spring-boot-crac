@@ -1,37 +1,36 @@
-### Docker:3 modes for checkpoint and restore
+# CRaC Demo
 
 Build the image:
 ```
 docker build -t crac-demo .
 ```
 
-#### Scenario 1: Normal run (no checkpoint)
-Just run the app normally without using CRaC:
+Spin up the docker compose file:
+```
+docker compose up -d
+```
+
+## Scenario 1: Run the application without CRaC
 ```
 docker run --rm -p 8080:8080 crac-demo
 ```
 
-#### Scenario 2: Create checkpoint only
+## Scenario 2: Create checkpoint only and restore
 Start the app, let it warm up, then create a checkpoint and exit:
-```
-docker run --rm --network tangram_default -v crac-checkpoint:/checkpoint -e MODE=checkpoint-only -e SPRING_PROFILES_ACTIVE=default,docker crac-demo
-```
+If needed to provide the `--network` flag to ensure the container can access the database, if databases are not in different network
+remove the `--network some-network` flag if not needed:
 
-#### Scenario 3: Restore from checkpoint
+```
+docker run --rm --network some-network -v crac-checkpoint:/checkpoint -e MODE=checkpoint-only -e SPRING_PROFILES_ACTIVE=default,docker crac-demo
+```
 Resume the app from a previously saved checkpoint:
 ```
-docker run --rm --network tangram_default -p 8080:8080 -v crac-checkpoint:/checkpoint -e MODE=restore -e SPRING_PROFILES_ACTIVE=default,docker crac-demo
+docker run --rm --network some-network -p 8080:8080 -v crac-checkpoint:/checkpoint -e MODE=restore -e SPRING_PROFILES_ACTIVE=default,docker crac-demo
 ```
 
-This will start the app in seconds using the previously saved state.
-
-### Experimental: bake checkpoint into the image during build
-If you want the checkpoint stored inside the image filesystem, use the alternate Dockerfile:
+Test the application by sending a request to the endpoint:
 ```
-docker build -f Dockerfile.prebaked-checkpoint -t crac-demo-prebaked .
-```
-
-Then run the image normally. It will restore from the baked checkpoint by default:
-```
-docker run --rm -p 8080:8080 crac-demo-prebaked
+curl http://localhost:8080/hello
+curl http://localhost:8080/mongo/save
+curl http://localhost:8080/postgres/save
 ```
